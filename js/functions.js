@@ -1,20 +1,11 @@
-/* Вопросы:
-1. В задании не указано, должна ли я выводить результат в консоль
-просто вернуть булевое значение. Поэтому я пока решила
-вывести в консоль для наглядности.
-
-
-*/
-
 // Функция для проверки длины строки
 const testingStringOne = 'проверяемая строка';
 
 function checkLength(string, length) {
   if (string.length <= length) {
-    console.log('Cтрока проходит по длине');
-  } else {
-    console.log('Строка не подходит');
+    return 'Cтрока проходит по длине';
   }
+  return 'Строка не подходит';
 }
 checkLength(testingStringOne, 10);
 
@@ -22,12 +13,11 @@ checkLength(testingStringOne, 10);
 const testingStringTwo = 'Лёша на полке клопа нашёл';
 
 function checkPalindrome(string) {
-  let stringTwo = string.split('').reverse().join('');
+  const stringTwo = string.split('').reverse().join('');
   if (string.replaceAll(' ', '').toLowerCase() === stringTwo.replaceAll(' ', '').toLowerCase()) {
-    console.log('Это палиндром!');
-  } else {
-    console.log('Это не палиндром');
+    return 'Это палиндром!';
   }
+  return 'Это не палиндром';
 }
 checkPalindrome(testingStringTwo);
 
@@ -42,13 +32,12 @@ const testingStringThree = '1.34';
 
 function toNumber(string) {
   if (typeof string === 'string') {
-    let newNumber = string.replace(/[^1-9]/g,"");
-    console.log(parseInt(newNumber, 10));
-  } else {
-    let newNumber = String(string).replace(/[^1-9]/g,"");
-    console.log(parseInt(newNumber, 10));
+    const newNumberOne = string.replace(/[^1-9]/g,'');
+    return parseInt(newNumberOne, 10);
   }
-  }
+  const newNumber = String(string).replace(/[^1-9]/g,'');
+  return parseInt(newNumber, 10);
+}
 
 toNumber(testingStringThree);
 
@@ -58,7 +47,7 @@ function addLetters (string, minlength, letter) {
   while (string.length < minlength) {
     string = letter.substring(0, minlength - string.length) + string;
   }
-  console.log(string)
+  return string;
 }
 
 addLetters('1', 4, '0');

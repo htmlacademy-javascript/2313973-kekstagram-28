@@ -1,4 +1,4 @@
-
+const PICTURE_COUNT = 25;
 const DESCRIPTIONS = [
   'Фото', 'Наш отель', 'На пляж', 'Лазурный берег', 'Фотограф', 'Chill',
   'Моя малышка', 'Всё, что осталось', 'Сок', 'Привет, самолёт!', 'Обувь',
@@ -22,7 +22,6 @@ function getRandomInteger (a, b) {
   return Math.floor(result);
 }
 
-
 function createRandomIdFromRangeGenerator (a, b) {
   const previousValues = [];
   let currentValue = getRandomInteger(a, b);
@@ -37,28 +36,25 @@ function createRandomIdFromRangeGenerator (a, b) {
 }
 
 function createComments () {
-  const randomUser = createRandomIdFromRangeGenerator (1, USERSNAMES.length - 1);
+  const randomUser = createRandomIdFromRangeGenerator (0, USERSNAMES.length - 1);
   return {
     id:createRandomIdFromRangeGenerator (1, 1000000),
     avatar: `img/${randomUser}.svg`,
-    message: MESSAGES[createRandomIdFromRangeGenerator (1, MESSAGES.length - 1)],
+    message: MESSAGES[createRandomIdFromRangeGenerator (0, MESSAGES.length - 1)],
     name: randomUser
   };
 }
-const commentsArray = Array.from({length: 3}, createComments);
 
 function createPost () {
-  const randomPhoto = createRandomIdFromRangeGenerator (1, 25);
+  const randomPhoto = createRandomIdFromRangeGenerator (1, PICTURE_COUNT);
   return {
-    id: createRandomIdFromRangeGenerator (1, 25),
+    id: createRandomIdFromRangeGenerator (1, PICTURE_COUNT),
     url: `photos/${randomPhoto}.jpg`,
-    likes: createRandomIdFromRangeGenerator (15, 2000),
+    likes: createRandomIdFromRangeGenerator (15, 200),
     description: DESCRIPTIONS[randomPhoto],
-    comments: JSON.stringify(commentsArray)
+    comments:  Array.from({length: 3}, createComments)
   };
 }
-// Я использовала метод JSON.stringify, чтобы перевести объекты массива comments в строку,
-//до этого в консоль выводилось [Object] вместо элементов массива
 
 // eslint-disable-next-line no-unused-vars
-const allPosts = Array.from({length: 25}, createPost);
+const createPhotos = () => Array.from({length: 25}, createPost);

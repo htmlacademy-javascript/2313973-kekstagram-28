@@ -1,6 +1,6 @@
 import {createPhotos} from './data.js';
-const picturesList = document.querySelector('.picture');
-const usersPictureTemplate = document.querySelector('#picture').content('.picture');
+const picturesList = document.querySelector('.pictures');
+const usersPictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
 const usersPhotos = createPhotos();
 
 const picturesListFragment = document.createDocumentFragment();
@@ -14,4 +14,6 @@ usersPhotos.forEach(({url,likes,comments}) => {
 });
 
 picturesList.appendChild(picturesListFragment);
+
+export {picturesList};
 

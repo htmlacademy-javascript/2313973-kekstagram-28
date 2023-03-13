@@ -7,15 +7,18 @@ function getRandomInteger (a, b) {
 
 function createRandomIdFromRangeGenerator (a, b) {
   const previousValues = [];
-  let currentValue = getRandomInteger(a, b);
-  if (previousValues.length >= (b - a + 1)) {
-    return null;
-  }
-  while (previousValues.includes(currentValue)) {
-    currentValue = getRandomInteger(a, b);
-  }
-  previousValues.push(currentValue);
-  return currentValue;
+  return function () {
+    let currentValue = getRandomInteger(a, b);
+    if (previousValues.length >= (b - a + 1)) {
+      return null;
+    }
+    while (previousValues.includes(currentValue)) {
+      currentValue = getRandomInteger(a, b);
+    }
+    previousValues.push(currentValue);
+    return currentValue;
+  };
 }
 
 export {createRandomIdFromRangeGenerator};
+

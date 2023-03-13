@@ -1,5 +1,4 @@
-import {createRandomIdFromRangeGenerator} from '/js/util';
-
+import {createRandomIdFromRangeGenerator} from './util.js';
 const PICTURE_COUNT = 25;
 const DESCRIPTIONS = [
   'Фото', 'Наш отель', 'На пляж', 'Лазурный берег', 'Фотограф', 'Chill',
@@ -17,23 +16,30 @@ const MESSAGES = ['Всё отлично!','В целом всё неплохо.
   'Я поскользнулся на банановой кожуре и уронил фотоаппарат на кота и у меня получилась фотография лучше.',
   'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!'];
 
+const randomUserCreate = createRandomIdFromRangeGenerator (0, USERSNAMES.length - 1);
+const randomIdCommentsCreate = createRandomIdFromRangeGenerator (1, 1000000);
+const randomMassageCreate = createRandomIdFromRangeGenerator (0, MESSAGES.length - 1);
 
 function createComments () {
-  const randomUser = createRandomIdFromRangeGenerator (0, USERSNAMES.length - 1);
+  const CommetsUser = randomUserCreate();
+  const randomMassage = randomMassageCreate();
   return {
-    id:createRandomIdFromRangeGenerator (1, 1000000),
-    avatar: `img/${randomUser}.svg`,
-    message: MESSAGES[createRandomIdFromRangeGenerator (0, MESSAGES.length - 1)],
-    name: randomUser
+    id:randomIdCommentsCreate(),
+    avatar: `img/${CommetsUser}.svg`,
+    message: MESSAGES[randomMassage],
+    name: CommetsUser
   };
 }
 
+const randomLikesCreate = createRandomIdFromRangeGenerator (15, 200);
+const randomPhotoCreate = createRandomIdFromRangeGenerator (1, PICTURE_COUNT);
+
 function createPost () {
-  const randomPhoto = createRandomIdFromRangeGenerator (1, PICTURE_COUNT);
+  const randomPhoto = randomPhotoCreate();
   return {
-    id: createRandomIdFromRangeGenerator (1, PICTURE_COUNT),
+    id: randomPhoto,
     url: `photos/${randomPhoto}.jpg`,
-    likes: createRandomIdFromRangeGenerator (15, 200),
+    likes: randomLikesCreate(),
     description: DESCRIPTIONS[randomPhoto],
     comments:  Array.from({length: 3}, createComments)
   };

@@ -21,13 +21,13 @@ const randomIdCommentsCreate = createRandomIdFromRangeGenerator (1, 1000000);
 const randomMassageCreate = createRandomIdFromRangeGenerator (0, MESSAGES.length - 1);
 
 function createComments () {
-  const CommetsUser = randomUserCreate();
+  const Сommenter = randomUserCreate();
   const randomMassage = randomMassageCreate();
   return {
     id:randomIdCommentsCreate(),
-    avatar: `img/${CommetsUser}.svg`,
+    avatar: `img/${Сommenter}.svg`,
     message: MESSAGES[randomMassage],
-    name: CommetsUser
+    name: Сommenter
   };
 }
 

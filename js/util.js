@@ -20,5 +20,7 @@ function createRandomIdFromRangeGenerator (a, b) {
   };
 }
 
-export {createRandomIdFromRangeGenerator};
+const isEscapeKey = (evt) => evt.key === 'Escape';
+
+export {createRandomIdFromRangeGenerator,getRandomInteger, isEscapeKey};
 

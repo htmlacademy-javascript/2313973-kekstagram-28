@@ -7,11 +7,12 @@ const usersPictureTemplate = document.querySelector('#picture').content.querySel
 
 const picturesListFragment = document.createDocumentFragment();
 
-usersPhotos.forEach(({url,likes,comments,}) => {
+usersPhotos.forEach(({url,likes,comments, id}) => {
   const usersPicture = usersPictureTemplate.cloneNode(true);
   usersPicture.querySelector('.picture__img').src = url;
   usersPicture.querySelector('.picture__likes').textContent = likes;
   usersPicture.querySelector('.picture__comments').textContent = comments.length;
+  usersPicture.dataset.pictureId = id;
   picturesListFragment.appendChild(usersPicture);
 });
 

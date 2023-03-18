@@ -35,23 +35,21 @@ function openFullPhoto (evt) {
     while (socialCommentsList.firstChild) {
       socialCommentsList.removeChild(socialCommentsList.firstChild);
     }
-    createPicture (evt);
-    createComment (evt);
+    renderPicture (evt);
+    renderComments (evt);
   }
 }
-function createPicture (evt) {
+function renderPicture (evt) {
   bigPictureImg.src = evt.target.closest('.picture').querySelector('img').src;
   likesCount.textContent = evt.target.closest('.picture').querySelector('.picture__likes').textContent;
   commentsCount.textContent = evt.target.closest('.picture').querySelector('.picture__comments').textContent;
-  socialCaption.textContent = DESCRIPTIONS[(bigPictureImg.src.slice(bigPictureImg.src.length - 6, -4)
-    .replace(/[^0-9]/g, ''))];
+  socialCaption.textContent = DESCRIPTIONS[evt.target.closest('.picture').dataset.pictureId];
 }
 
-function createComment (evt) {
-  const bigPictureId = evt.target.closest('.picture').querySelector('img').src.
-    slice(bigPictureImg.src.length - 6, -4).replace(/[^0-9]/g, '');
+function renderComments (evt) {
+  const picture = usersPhotos.find((item) => item.id === +evt.target.closest('.picture').dataset.pictureId);
 
-  usersPhotos[bigPictureId].comments.forEach(({avatar, name, message}) => {
+  picture.comments.forEach(({avatar, name, message}) => {
     const socialComment = socialCommentTamplate.cloneNode(true);
     socialComment.querySelector('img').src = avatar;
     socialComment.querySelector('img').alt = name;

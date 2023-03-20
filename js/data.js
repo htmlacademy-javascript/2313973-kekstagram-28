@@ -14,7 +14,9 @@ const MESSAGES = ['Всё отлично!','В целом всё неплохо.
   'Когда вы делаете фотографию, хорошо бы убирать палец из кадра. В конце концов это просто непрофессионально.',
   'Моя бабушка случайно чихнула с фотоаппаратом в руках и у неё получилась фотография лучше.',
   'Я поскользнулся на банановой кожуре и уронил фотоаппарат на кота и у меня получилась фотография лучше.',
-  'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!'];
+  'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!',
+  'Красиво!', 'Красиво', 'Полный улет!','Вот это да!', 'Мне нравится!','Ты настоящий фотограф!!','Просто супер!',
+  'Ты гений!', 'Ору)))', 'Так классно!', 'Просто супер!', 'Хочу туда!','Молдец!','Отлично получилось!','Ого))'];
 
 
 const randomIdCommentsCreate = createRandomIdFromRangeGenerator (1, 1000000);
@@ -34,12 +36,13 @@ const randomPhotoCreate = createRandomIdFromRangeGenerator (1, PICTURE_COUNT);
 
 function createPost () {
   const randomPhoto = randomPhotoCreate();
+  const countOfComments = getRandomInteger(6,20);
   return {
     id: randomPhoto,
     url: `photos/${randomPhoto}.jpg`,
     likes: randomLikesCreate(),
     description: DESCRIPTIONS[randomPhoto],
-    comments:  Array.from({length: 2}, createComments)
+    comments:  Array.from({length: countOfComments}, createComments)
   };
 }
 

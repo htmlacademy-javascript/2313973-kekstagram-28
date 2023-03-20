@@ -1,3 +1,4 @@
 import '../js/data.js';
 import '../js/util.js';
-import '../js/popup.js';
+import '../js/make-miniatures.js';
+import '../js/full-size-photo.js';

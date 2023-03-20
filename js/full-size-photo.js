@@ -2,6 +2,8 @@ import {isEscapeKey} from './util.js';
 import { DESCRIPTIONS} from './data.js';
 import {usersPhotos} from './make-miniatures.js';
 
+const COMMENTS_PORTION = 5;
+
 const listMiniatures = document.querySelector('.pictures');
 const bigPicture = document.querySelector('.big-picture');
 const cancelButton = document.querySelector('.big-picture__cancel');
@@ -15,6 +17,8 @@ const socialCaption = document.querySelector('.social__caption');
 const socialCommentsList = bigPicture.querySelector('.social__comments');
 const socialCommentTamplate = socialCommentsList.querySelector('.social__comment');
 
+let commentsShown = 0;
+let comments = [];
 
 function onDocumentKeydown (evt) {
   if (isEscapeKey(evt)) {
@@ -23,18 +27,14 @@ function onDocumentKeydown (evt) {
   }
 }
 
-
 function openFullPhoto (evt) {
   if (evt.target.closest('.picture')) {
     evt.preventDefault();
     bigPicture.classList.remove('hidden');
     bodyNoSroll.classList.add('modal-open');
-    commentCount.classList.add('hidden');
-    commentsLoader.classList.add('hidden');
     document.addEventListener('keydown', onDocumentKeydown);
-    socialCommentsList.innerHTML = '';
     renderPicture (evt);
-    renderComments (evt);
+    showCommets (evt);
   }
 }
 function renderPicture (evt) {
@@ -42,26 +42,45 @@ function renderPicture (evt) {
   likesCount.textContent = evt.target.closest('.picture').querySelector('.picture__likes').textContent;
   commentsCount.textContent = evt.target.closest('.picture').querySelector('.picture__comments').textContent;
   socialCaption.textContent = DESCRIPTIONS[evt.target.closest('.picture').dataset.pictureId];
+  comments = usersPhotos.find((item) => item.id === +evt.target.closest('.picture').dataset.pictureId).comments;
+}
+function renderComment (comment) {
+  const socialComment = socialCommentTamplate.cloneNode(true);
+  socialComment.querySelector('img').src = comment.avatar;
+  socialComment.querySelector('img').alt = comment.name;
+  socialComment.querySelector('.social__text').textContent = comment.message;
+  socialCommentsList.appendChild(socialComment);
+
+  return socialComment;
 }
 
-function renderComments (evt) {
-  const picture = usersPhotos.find((item) => item.id === +evt.target.closest('.picture').dataset.pictureId);
-  if (picture) {
-    picture.comments.forEach(({avatar, name, message}) => {
-      const socialComment = socialCommentTamplate.cloneNode(true);
-      socialComment.querySelector('img').src = avatar;
-      socialComment.querySelector('img').alt = name;
-      socialComment.querySelector('.social__text').textContent = message;
-      socialCommentsList.appendChild(socialComment);
-    });
+
+function showCommets () {
+  commentsShown += COMMENTS_PORTION;
+  if (commentsShown >= comments.length) {
+    commentsLoader.classList.add('hidden');
+    commentsShown = comments.length;
+  } else {
+    commentsLoader.classList.remove('hidden');
   }
-}
+  const fragment = document.createDocumentFragment();
+  for (let i = 0; i < commentsShown; i++) {
+    const commentElement = renderComment(comments[i]);
+    fragment.append(commentElement);
+  }
+  socialCommentsList.innerHTML = '';
+  socialCommentsList.append(fragment);
+  commentCount.innerHTML = `${commentsShown} из ${comments.length} комментариев`;
 
+}
 function closeFullPhoto () {
   bigPicture.classList.add('hidden');
   bodyNoSroll.classList.remove('modal-open');
   document.removeEventListener('keydown', onDocumentKeydown);
+  commentsShown = 0;
 }
-cancelButton.addEventListener('click',closeFullPhoto);
+cancelButton.addEventListener('click', closeFullPhoto);
+
+commentsLoader.addEventListener('click',showCommets);
 
 listMiniatures.addEventListener('click', openFullPhoto);

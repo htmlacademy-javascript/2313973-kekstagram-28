@@ -43,6 +43,7 @@ function renderPicture (evt) {
   commentsCount.textContent = evt.target.closest('.picture').querySelector('.picture__comments').textContent;
   socialCaption.textContent = DESCRIPTIONS[evt.target.closest('.picture').dataset.pictureId];
   comments = usersPhotos.find((item) => item.id === +evt.target.closest('.picture').dataset.pictureId).comments;
+
 }
 function renderComment (comment) {
   const socialComment = socialCommentTamplate.cloneNode(true);
@@ -57,9 +58,10 @@ function renderComment (comment) {
 
 function showCommets () {
   commentsShown += COMMENTS_PORTION;
-  if (commentsShown >= comments.length) {
+  const lengthOfComments = comments.length;
+  if (commentsShown >= lengthOfComments) {
     commentsLoader.classList.add('hidden');
-    commentsShown = comments.length;
+    commentsShown = lengthOfComments;
   } else {
     commentsLoader.classList.remove('hidden');
   }
@@ -70,7 +72,7 @@ function showCommets () {
   }
   socialCommentsList.innerHTML = '';
   socialCommentsList.append(fragment);
-  commentCount.innerHTML = `${commentsShown} из ${comments.length} комментариев`;
+  commentCount.innerHTML = `${commentsShown} из ${lengthOfComments} комментариев`;
 
 }
 function closeFullPhoto () {

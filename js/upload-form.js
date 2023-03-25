@@ -48,7 +48,7 @@ function onCloseUploadModal () {
 
 uploadCancel.addEventListener('click', onCloseUploadModal);
 
-function createArrayofTags (value) {
+function createArrayOfTags (value) {
   return value.trim().split(' ').filter((tag) => tag.trim().length);
 }
 function isValidated (tag) {
@@ -56,17 +56,17 @@ function isValidated (tag) {
 }
 
 function checkHashgtagSymbols (value) {
-  const tags = createArrayofTags(value);
+  const tags = createArrayOfTags(value);
   return tags.every(isValidated);
 }
 
 function checkValidCount (value) {
-  const tags = createArrayofTags(value);
+  const tags = createArrayOfTags(value);
   return tags.length <= HASGTAG_COUNT;
 }
 
 function checkUniqueaHashtags (value) {
-  const tags = createArrayofTags(value);
+  const tags = createArrayOfTags(value);
   const toLowerCaseTags = tags.map((tag) => tag.toLowerCase());
   return tags.length === new Set(toLowerCaseTags).size;
 }

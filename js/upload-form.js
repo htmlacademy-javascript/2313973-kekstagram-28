@@ -27,18 +27,18 @@ function isFocused () {
 function onDocumentKeydown (evt) {
   if (isEscapeKey(evt) && !isFocused()) {
     evt.preventDefault();
-    sloseUploadModal ();
+    onCloseUploadModal ();
   }
 }
-function openUploadModal () {
+function onOpenUploadModal () {
   openModal.classList.remove('hidden');
   document.body.classList.add('modal-open');
   document.addEventListener('keydown', onDocumentKeydown);
 }
 
-downloadPicture.addEventListener('change', openUploadModal);
+downloadPicture.addEventListener('change', onOpenUploadModal);
 
-function sloseUploadModal () {
+function onCloseUploadModal () {
   openModal.classList.add('hidden');
   document.body.classList.remove('modal-open');
   document.removeEventListener('keydown', onDocumentKeydown);
@@ -46,32 +46,32 @@ function sloseUploadModal () {
   pristine.reset();
 }
 
-uploadCancel.addEventListener('click',sloseUploadModal);
+uploadCancel.addEventListener('click', onCloseUploadModal);
 
-function createArray (value) {
+function createArrayofTags (value) {
   return value.trim().split(' ').filter((tag) => tag.trim().length);
 }
-function checkHasgtagSymbols (tag) {
+function isValidated (tag) {
   return HASHTAG_SYMBOLS.test(tag);
 }
 
-function isValidated (value) {
-  const tags = createArray(value);
-  return tags.every(checkHasgtagSymbols);
+function checkHashgtagSymbols (value) {
+  const tags = createArrayofTags(value);
+  return tags.every(isValidated);
 }
 
 function checkValidCount (value) {
-  const tags = createArray(value);
+  const tags = createArrayofTags(value);
   return tags.length <= HASGTAG_COUNT;
 }
 
 function checkUniqueaHashtags (value) {
-  const tags = createArray(value);
+  const tags = createArrayofTags(value);
   const toLowerCaseTags = tags.map((tag) => tag.toLowerCase());
   return tags.length === new Set(toLowerCaseTags).size;
 }
 
-pristine.addValidator(hashtagField,isValidated, HASHTAG_ERROR_TEXT_SYMBOLS);
+pristine.addValidator(hashtagField,checkHashgtagSymbols, HASHTAG_ERROR_TEXT_SYMBOLS);
 pristine.addValidator(hashtagField,checkValidCount,HASHTAG_ERROR_TEXT_COUNT);
 pristine.addValidator(hashtagField,checkUniqueaHashtags, HASHTAG_ERROR_TEXT_UNIQUE);
 

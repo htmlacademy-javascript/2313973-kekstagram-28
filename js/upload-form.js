@@ -1,4 +1,6 @@
 import {isEscapeKey} from './util.js';
+import {resetScale} from './scale.js';
+import {resetEffects} from './effects.js';
 
 const HASHTAG_SYMBOLS = /^#[a-za-яё0-9]{1,19}$/i;
 const HASHTAG_ERROR_TEXT_SYMBOLS = 'Хэштэг должен начинаться с # и содержать только цифры и буквы';
@@ -34,6 +36,7 @@ function onOpenUploadModal () {
   openModal.classList.remove('hidden');
   document.body.classList.add('modal-open');
   document.addEventListener('keydown', onDocumentKeydown);
+  resetScale();
 }
 
 downloadPicture.addEventListener('change', onOpenUploadModal);
@@ -44,6 +47,8 @@ function onCloseUploadModal () {
   document.removeEventListener('keydown', onDocumentKeydown);
   uploadForm.reset();
   pristine.reset();
+  resetScale();
+  resetEffects();
 }
 
 uploadCancel.addEventListener('click', onCloseUploadModal);
@@ -70,6 +75,7 @@ function checkUniqueaHashtags (value) {
   const toLowerCaseTags = tags.map((tag) => tag.toLowerCase());
   return tags.length === new Set(toLowerCaseTags).size;
 }
+
 
 pristine.addValidator(hashtagField,checkHashgtagSymbols, HASHTAG_ERROR_TEXT_SYMBOLS);
 pristine.addValidator(hashtagField,checkValidCount,HASHTAG_ERROR_TEXT_COUNT);

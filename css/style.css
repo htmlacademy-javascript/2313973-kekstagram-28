@@ -1332,7 +1332,7 @@ main {
 
   -webkit-transform: translateX(-50%);
       -ms-transform: translateX(-50%);
-          transform: translateX(-50%);
+          .img-upload__preview : translateX(-50%);
 }
 
 

@@ -1,6 +1,5 @@
 import {isEscapeKey} from './util.js';
-import {getData} from './fetch.js';
-
+import {photos} from './api.js';
 const COMMENTS_PORTION = 5;
 
 const listMiniatures = document.querySelector('.pictures');
@@ -18,7 +17,6 @@ const socialCommentTamplate = socialCommentsList.querySelector('.social__comment
 
 let commentsShown = 0;
 let comments = [];
-const photos = await getData();
 
 function onDocumentKeydown (evt) {
   if (isEscapeKey(evt)) {

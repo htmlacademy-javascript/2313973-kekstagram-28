@@ -1,7 +1,5 @@
 import {isEscapeKey} from './util.js';
-import { DESCRIPTIONS} from './data.js';
-import {usersPhotos} from './make-miniatures.js';
-
+import {photos} from './api.js';
 const COMMENTS_PORTION = 5;
 
 const listMiniatures = document.querySelector('.pictures');
@@ -37,12 +35,14 @@ function openFullPhoto (evt) {
     showCommets (evt);
   }
 }
+
 function renderPicture (evt) {
   bigPictureImg.src = evt.target.closest('.picture').querySelector('img').src;
   likesCount.textContent = evt.target.closest('.picture').querySelector('.picture__likes').textContent;
   commentsCount.textContent = evt.target.closest('.picture').querySelector('.picture__comments').textContent;
-  socialCaption.textContent = DESCRIPTIONS[evt.target.closest('.picture').dataset.pictureId];
-  comments = usersPhotos.find((item) => item.id === +evt.target.closest('.picture').dataset.pictureId).comments;
+  socialCaption.textContent = photos.find((item) =>
+    item.id === +evt.target.closest('.picture').dataset.pictureId).description;
+  comments = photos.find((item) => item.id === +evt.target.closest('.picture').dataset.pictureId).comments;
 
 }
 function renderComment (comment) {
@@ -86,3 +86,5 @@ cancelButton.addEventListener('click', closeFullPhoto);
 commentsLoader.addEventListener('click',showCommets);
 
 listMiniatures.addEventListener('click', openFullPhoto);
+
+export {renderComment, showCommets};

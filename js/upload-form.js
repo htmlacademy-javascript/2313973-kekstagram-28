@@ -1,6 +1,7 @@
-import {isEscapeKey} from './util.js';
+import {isEscapeKey,showMessage} from './util.js';
 import {resetScale} from './scale.js';
 import {resetEffects} from './effects.js';
+import { sendData } from './fetch.js';
 
 const HASHTAG_SYMBOLS = /^#[a-za-яё0-9]{1,19}$/i;
 const HASHTAG_ERROR_TEXT_SYMBOLS = 'Хэштэг должен начинаться с # и содержать только цифры и буквы';
@@ -14,7 +15,7 @@ const uploadCancel = document.querySelector('#upload-cancel');
 const uploadForm = document.querySelector('.img-upload__form');
 const hashtagField = uploadForm.querySelector('.text__hashtags');
 const commentField = uploadForm.querySelector('.text__description');
-const uploadSupmit = document.querySelector('.img-upload__submit');
+const uploadSupmit = document.querySelector('.img-upload__form');
 
 const pristine = new Pristine (uploadForm, {
   classTo: 'img-upload__field-wrapper',
@@ -81,7 +82,18 @@ pristine.addValidator(hashtagField,checkHashgtagSymbols, HASHTAG_ERROR_TEXT_SYMB
 pristine.addValidator(hashtagField,checkValidCount,HASHTAG_ERROR_TEXT_COUNT);
 pristine.addValidator(hashtagField,checkUniqueaHashtags, HASHTAG_ERROR_TEXT_UNIQUE);
 
-uploadSupmit.addEventListener('submit', (evt) =>
-  evt.preventDefault(),
-pristine.validate()
-);
+const setUserFormSubmit = (onSuccess) => {
+  uploadSupmit.addEventListener('submit', async (evt) => {
+    evt.preventDefault();
+    const isValid = pristine.validate();
+    if (isValid) {
+      const formData = new FormData(evt.target);
+      await sendData(formData).then(onSuccess).then(showMessage('Данные загружены успешно')).catch(
+        (err) => {
+          showMessage(err.message);
+        });
+    }
+  });
+};
+
+export {setUserFormSubmit,onCloseUploadModal};

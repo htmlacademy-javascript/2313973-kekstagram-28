@@ -1,7 +1,6 @@
 const picturesList = document.querySelector('.pictures');
 const usersPictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
 
-
 const picturesListFragment = document.createDocumentFragment();
 
 function renderGallery (photos) {
@@ -14,7 +13,7 @@ function renderGallery (photos) {
     picturesListFragment.appendChild(usersPicture);
   }
   );
-
+  picturesList.querySelectorAll('.picture').forEach((picture) => picture.remove());
   picturesList.appendChild(picturesListFragment);
 }
 

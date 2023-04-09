@@ -25,6 +25,5 @@ function showMessage(message) {
 
 const isEscapeKey = (evt) => evt.key === 'Escape';
 
-export {isEscapeKey};
-export {showMessage};
+export {isEscapeKey,showMessage};
 

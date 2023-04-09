@@ -1,3 +1,5 @@
+import {renderGallery} from './make-miniatures.js';
+
 const ALERT_SHOW_TIME = 5000;
 
 const messageContainer = document.createElement('div');
@@ -25,6 +27,33 @@ function showMessage(message) {
 
 const isEscapeKey = (evt) => evt.key === 'Escape';
 
-export {isEscapeKey};
-export {showMessage};
+function debounce (callback, timeoutDelay = 500) {
+  let timeoutId;
+  return (...rest) => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
+  };
+}
+
+const debouncedRenderGallery = debounce(renderGallery);
+
+function sortRandomly(arr){
+  let j, temp;
+  for(let i = arr.length - 1; i > 0; i--){
+    j = Math.floor(Math.random() * (i + 1));
+    temp = arr[j];
+    arr[j] = arr[i];
+    arr[i] = temp;
+  }
+  return arr;
+}
+
+function comparePhotos (photo1, photo2) {
+  const rank1 = photo1.comments.length;
+  const rank2 = photo2.comments.length;
+
+  return rank2 - rank1;
+}
+
+export {isEscapeKey,showMessage,debouncedRenderGallery,sortRandomly,comparePhotos};
 

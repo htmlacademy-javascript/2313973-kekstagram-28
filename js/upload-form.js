@@ -1,10 +1,11 @@
-import {isEscapeKey,showMessage} from './util.js';
+import {isEscapeKey} from './util.js';
 import {resetScale} from './scale.js';
 import {resetEffects} from './effects.js';
 import { sendData } from './fetch.js';
+import { showErrorMessage, showSuccessMessage} from './messages.js';
 
 const HASHTAG_SYMBOLS = /^#[a-za-яё0-9]{1,19}$/i;
-const HASHTAG_ERROR_TEXT_SYMBOLS = 'Хэштэг должен начинаться с # и содержать только цифры и буквы';
+const HASHTAG_ERROR_TEXT_SYMBOLS = 'Хэштэг должен начинаться с # и содержать только цифры и буквы, максимальная длины - 20 символов';
 const HASHTAG_ERROR_TEXT_COUNT = 'Слишком большое количество хэштэгов';
 const HASHTAG_ERROR_TEXT_UNIQUE = 'Хэштэги не должны повторяться';
 const HASGTAG_COUNT = 5;
@@ -88,10 +89,14 @@ const setUserFormSubmit = (onSuccess) => {
     const isValid = pristine.validate();
     if (isValid) {
       const formData = new FormData(evt.target);
-      await sendData(formData).then(onSuccess).then(showMessage('Данные загружены успешно')).catch(
-        (err) => {
-          showMessage(err.message);
-        });
+      await sendData(formData).then(onSuccess)
+        .then(() => {
+          showSuccessMessage();
+        })
+        .catch(
+          () => {
+            showErrorMessage();
+          });
     }
   });
 };

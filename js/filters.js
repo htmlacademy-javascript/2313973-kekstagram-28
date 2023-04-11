@@ -34,18 +34,18 @@ function sortDiscussedComments (pictures) {
   debouncedRenderGallery(discussedCommentsArray);
 }
 
-function sortDefoultPhotos(pictures) {
-  const copyOfArray = pictures.slice();
-  debouncedRenderGallery(copyOfArray);
+function sortDefaultPhotos(pictures) {
+  const defaultPhotos = pictures.slice();
+  debouncedRenderGallery(defaultPhotos);
 }
 
 function sortRandomPhotos(pictures) {
   const copyOfArray = pictures.slice(0, PICTURE_COUNT);
-  const newPicturesArray = sortRandomly(copyOfArray);
-  debouncedRenderGallery(newPicturesArray);
+  const randomPicturesArray = sortRandomly(copyOfArray);
+  debouncedRenderGallery(randomPicturesArray);
 }
 
 discussedPhotosButton.addEventListener('click', (() => sortDiscussedComments(photos)));
-defoultPhotosButton.addEventListener('click', (()=> sortDefoultPhotos(photos)));
+defoultPhotosButton.addEventListener('click', (()=> sortDefaultPhotos(photos)));
 randomPhotosButton.addEventListener('click', (()=> sortRandomPhotos(photos)));
 

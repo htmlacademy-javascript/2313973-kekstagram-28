@@ -1,6 +1,7 @@
 import {renderGallery} from './make-miniatures.js';
 
 const ALERT_SHOW_TIME = 5000;
+const RENDER_DELAY = 500;
 
 const messageContainer = document.createElement('div');
 messageContainer.style.zIndex = '100';
@@ -17,7 +18,7 @@ messageContainer.style.backgroundColor = 'rgba(255, 231, 82, 0.2)';
 messageContainer.classList.add('hidden');
 document.body.append(messageContainer);
 
-function showMessage(message) {
+function showAlert(message) {
   messageContainer.classList.remove('hidden');
   messageContainer.textContent = message;
   setTimeout(() => {
@@ -27,7 +28,7 @@ function showMessage(message) {
 
 const isEscapeKey = (evt) => evt.key === 'Escape';
 
-function debounce (callback, timeoutDelay = 500) {
+function debounce (callback, timeoutDelay) {
   let timeoutId;
   return (...rest) => {
     clearTimeout(timeoutId);
@@ -35,7 +36,7 @@ function debounce (callback, timeoutDelay = 500) {
   };
 }
 
-const debouncedRenderGallery = debounce(renderGallery);
+const debouncedRenderGallery = debounce(renderGallery, RENDER_DELAY);
 
 function sortRandomly(arr){
   let j, temp;
@@ -55,5 +56,5 @@ function comparePhotos (photo1, photo2) {
   return rank2 - rank1;
 }
 
-export {isEscapeKey,showMessage,debouncedRenderGallery,sortRandomly,comparePhotos};
+export {isEscapeKey, debouncedRenderGallery,sortRandomly,comparePhotos,showAlert};
 

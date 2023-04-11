@@ -2,7 +2,7 @@ import {isEscapeKey} from './util.js';
 import {resetScale} from './scale.js';
 import {resetEffects} from './effects.js';
 import { sendData } from './fetch.js';
-import { showErrorMessage, showSuccessMessage} from './messages.js';
+import { onShowErrorMessage, onShowSuccessMessage} from './messages.js';
 
 const HASHTAG_SYMBOLS = /^#[a-za-яё0-9]{1,19}$/i;
 const HASHTAG_ERROR_TEXT_SYMBOLS = 'Хэштэг должен начинаться с # и содержать только цифры и буквы, максимальная длины - 20 символов';
@@ -16,7 +16,10 @@ const uploadCancel = document.querySelector('#upload-cancel');
 const uploadForm = document.querySelector('.img-upload__form');
 const hashtagField = uploadForm.querySelector('.text__hashtags');
 const commentField = uploadForm.querySelector('.text__description');
-const uploadSupmit = document.querySelector('.img-upload__form');
+const uploadSubmit = document.querySelector('.img-upload__form');
+const uploadSubmitButton = document.querySelector('.img-upload__submit');
+
+let isErrorMessageOpen = false;
 
 const pristine = new Pristine (uploadForm, {
   classTo: 'img-upload__field-wrapper',
@@ -29,7 +32,7 @@ function isFocused () {
 }
 
 function onDocumentKeydown (evt) {
-  if (isEscapeKey(evt) && !isFocused()) {
+  if (isEscapeKey(evt) && !isFocused() && !isErrorMessageOpen) {
     evt.preventDefault();
     onCloseUploadModal ();
   }
@@ -51,9 +54,11 @@ function onCloseUploadModal () {
   pristine.reset();
   resetScale();
   resetEffects();
+  uploadSubmitButton.removeAttribute('disabled');
 }
 
 uploadCancel.addEventListener('click', onCloseUploadModal);
+
 
 function createArrayOfTags (value) {
   return value.trim().split(' ').filter((tag) => tag.trim().length);
@@ -84,19 +89,24 @@ pristine.addValidator(hashtagField,checkValidCount,HASHTAG_ERROR_TEXT_COUNT);
 pristine.addValidator(hashtagField,checkUniqueaHashtags, HASHTAG_ERROR_TEXT_UNIQUE);
 
 const setUserFormSubmit = (onSuccess) => {
-  uploadSupmit.addEventListener('submit', async (evt) => {
+  uploadSubmit.addEventListener('submit', async (evt) => {
     evt.preventDefault();
     const isValid = pristine.validate();
     if (isValid) {
       const formData = new FormData(evt.target);
-      await sendData(formData).then(onSuccess)
-        .then(() => {
-          showSuccessMessage();
+      uploadSubmitButton.setAttribute('disabled', 'disabled');
+      await sendData(formData)
+        .then(onSuccess).then(() => {
+          onShowSuccessMessage();
         })
         .catch(
           () => {
-            showErrorMessage();
-          });
+            onShowErrorMessage();
+          })
+        .then(uploadSubmitButton.removeAttribute('disabled'))
+        .then(() => {
+          isErrorMessageOpen = true;
+        });
     }
   });
 };

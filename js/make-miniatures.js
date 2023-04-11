@@ -16,5 +16,5 @@ function renderGallery (photos) {
   picturesList.appendChild(picturesListFragment);
 }
 
-export {picturesList,renderGallery};
+export {renderGallery};
 

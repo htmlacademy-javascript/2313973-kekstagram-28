@@ -86,5 +86,3 @@ cancelButton.addEventListener('click', closeFullPhoto);
 commentsLoader.addEventListener('click',showCommets);
 
 listMiniatures.addEventListener('click', openFullPhoto);
-
-export {renderComment, showCommets};

@@ -7,3 +7,5 @@ import '../js/effects.js';
 import '../js/fetch.js';
 import '../js/api.js';
 import '../js/filters.js';
+import '../js/photo.js';
+import '../js/messages.js';

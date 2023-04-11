@@ -19,6 +19,8 @@ const commentField = uploadForm.querySelector('.text__description');
 const uploadSubmit = document.querySelector('.img-upload__form');
 const uploadSubmitButton = document.querySelector('.img-upload__submit');
 
+let isErrorMessageOpen = false;
+
 const pristine = new Pristine (uploadForm, {
   classTo: 'img-upload__field-wrapper',
   errorTextParent: 'img-upload__field-wrapper',
@@ -30,7 +32,7 @@ function isFocused () {
 }
 
 function onDocumentKeydown (evt) {
-  if (isEscapeKey(evt) && !isFocused()) {
+  if (isEscapeKey(evt) && !isFocused() && !isErrorMessageOpen) {
     evt.preventDefault();
     onCloseUploadModal ();
   }
@@ -56,6 +58,7 @@ function onCloseUploadModal () {
 }
 
 uploadCancel.addEventListener('click', onCloseUploadModal);
+
 
 function createArrayOfTags (value) {
   return value.trim().split(' ').filter((tag) => tag.trim().length);
@@ -99,7 +102,11 @@ const setUserFormSubmit = (onSuccess) => {
         .catch(
           () => {
             onShowErrorMessage();
-          }).then(uploadSubmitButton.removeAttribute('disabled'));
+          })
+        .then(uploadSubmitButton.removeAttribute('disabled'))
+        .then(() => {
+          isErrorMessageOpen = true;
+        });
     }
   });
 };

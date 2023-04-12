@@ -28,24 +28,24 @@ filtersForm.addEventListener('click', (evt) => {
   currentFilter = clickedButton.id;
 });
 
-function sortDiscussedComments (pictures) {
+function onSortDiscussedComments (pictures) {
   const copyOfArray = pictures.slice();
   const discussedCommentsArray = copyOfArray.sort(comparePhotos);
   debouncedRenderGallery(discussedCommentsArray);
 }
 
-function sortDefaultPhotos(pictures) {
+function onSortDefaultPhotos(pictures) {
   const defaultPhotos = pictures.slice();
   debouncedRenderGallery(defaultPhotos);
 }
 
-function sortRandomPhotos(pictures) {
+function onSortRandomPhotos(pictures) {
   const copyOfArray = pictures.slice(0, PICTURE_COUNT);
   const randomPicturesArray = sortRandomly(copyOfArray);
   debouncedRenderGallery(randomPicturesArray);
 }
 
-discussedPhotosButton.addEventListener('click', (() => sortDiscussedComments(photos)));
-defoultPhotosButton.addEventListener('click', (()=> sortDefaultPhotos(photos)));
-randomPhotosButton.addEventListener('click', (()=> sortRandomPhotos(photos)));
+discussedPhotosButton.addEventListener('click', (() => onSortDiscussedComments(photos)));
+defoultPhotosButton.addEventListener('click', (()=> onSortDefaultPhotos(photos)));
+randomPhotosButton.addEventListener('click', (()=> onSortRandomPhotos(photos)));
 

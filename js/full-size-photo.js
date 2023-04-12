@@ -21,18 +21,18 @@ let comments = [];
 function onDocumentKeydown (evt) {
   if (isEscapeKey(evt)) {
     evt.preventDefault();
-    closeFullPhoto ();
+    onCloseFullPhoto ();
   }
 }
 
-function openFullPhoto (evt) {
+function onOpenFullPhoto (evt) {
   if (evt.target.closest('.picture')) {
     evt.preventDefault();
     bigPicture.classList.remove('hidden');
     bodyNoSroll.classList.add('modal-open');
     document.addEventListener('keydown', onDocumentKeydown);
     renderPicture (evt);
-    showCommets (evt);
+    onShowCommets (evt);
   }
 }
 
@@ -56,7 +56,7 @@ function renderComment (comment) {
 }
 
 
-function showCommets () {
+function onShowCommets () {
   commentsShown += COMMENTS_PORTION;
   const lengthOfComments = comments.length;
   if (commentsShown >= lengthOfComments) {
@@ -75,14 +75,14 @@ function showCommets () {
   commentCount.innerHTML = `${commentsShown} из ${lengthOfComments} комментариев`;
 
 }
-function closeFullPhoto () {
+function onCloseFullPhoto () {
   bigPicture.classList.add('hidden');
   bodyNoSroll.classList.remove('modal-open');
   document.removeEventListener('keydown', onDocumentKeydown);
   commentsShown = 0;
 }
-cancelButton.addEventListener('click', closeFullPhoto);
+cancelButton.addEventListener('click', onCloseFullPhoto);
 
-commentsLoader.addEventListener('click',showCommets);
+commentsLoader.addEventListener('click',onShowCommets);
 
-listMiniatures.addEventListener('click', openFullPhoto);
+listMiniatures.addEventListener('click', onOpenFullPhoto);

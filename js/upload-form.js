@@ -2,7 +2,7 @@ import {isEscapeKey} from './util.js';
 import {resetScale} from './scale.js';
 import {resetEffects} from './effects.js';
 import { sendData } from './fetch.js';
-import { onShowErrorMessage, onShowSuccessMessage} from './messages.js';
+import { onShowErrorMessage, onShowSuccessMessage, isErrorMessageOpen} from './messages.js';
 
 const HASHTAG_SYMBOLS = /^#[a-za-яё0-9]{1,19}$/i;
 const HASHTAG_ERROR_TEXT_SYMBOLS = 'Хэштэг должен начинаться с # и содержать только цифры и буквы, максимальная длины - 20 символов';
@@ -19,7 +19,6 @@ const commentField = uploadForm.querySelector('.text__description');
 const uploadSubmit = document.querySelector('.img-upload__form');
 const uploadSubmitButton = document.querySelector('.img-upload__submit');
 
-let isErrorMessageOpen = false;
 
 const pristine = new Pristine (uploadForm, {
   classTo: 'img-upload__field-wrapper',
@@ -32,7 +31,7 @@ function isFocused () {
 }
 
 function onDocumentKeydown (evt) {
-  if (isEscapeKey(evt) && !isFocused() && !isErrorMessageOpen) {
+  if (isEscapeKey(evt) && !isFocused() && isErrorMessageOpen()) {
     evt.preventDefault();
     onCloseUploadModal ();
   }
@@ -96,17 +95,14 @@ const setUserFormSubmit = (onSuccess) => {
       const formData = new FormData(evt.target);
       uploadSubmitButton.setAttribute('disabled', 'disabled');
       await sendData(formData)
+        .then(uploadSubmitButton.removeAttribute('disabled'))
         .then(onSuccess).then(() => {
           onShowSuccessMessage();
         })
         .catch(
           () => {
             onShowErrorMessage();
-          })
-        .then(uploadSubmitButton.removeAttribute('disabled'))
-        .then(() => {
-          isErrorMessageOpen = true;
-        });
+          });
     }
   });
 };

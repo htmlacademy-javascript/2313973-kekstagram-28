@@ -56,5 +56,6 @@ function comparePhotos (photo1, photo2) {
   return rank2 - rank1;
 }
 
+
 export {isEscapeKey, debouncedRenderGallery,sortRandomly,comparePhotos,showAlert};
 

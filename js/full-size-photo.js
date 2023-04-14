@@ -47,8 +47,9 @@ function renderPicture (evt) {
 }
 function renderComment (comment) {
   const socialComment = socialCommentTamplate.cloneNode(true);
-  socialComment.querySelector('img').src = comment.avatar;
-  socialComment.querySelector('img').alt = comment.name;
+  const socialCommentUser = socialComment.querySelector('img');
+  socialCommentUser.src = comment.avatar;
+  socialCommentUser.alt = comment.name;
   socialComment.querySelector('.social__text').textContent = comment.message;
   socialCommentsList.appendChild(socialComment);
 

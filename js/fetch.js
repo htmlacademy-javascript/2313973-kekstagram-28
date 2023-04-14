@@ -8,16 +8,21 @@ const Method = {
   POST: 'POST',
 };
 
-const load = (route, method = Method.GET, body = null) =>
-  fetch(`${BASE_URL}${route}`, {method, body})
+function load (route, method = Method.GET, body = null) {
+  return fetch(`${BASE_URL}${route}`, {method, body})
     .then((response) => {
       if (!response.ok) {
-        return;
+        throw new Error();
       }
       return response.json();
     });
+}
 
-const getData = () => load(Route.GET_DATA);
-const sendData = (body) => load(Route.SEND_DATA, Method.POST, body);
+function getData () {
+  return load(Route.GET_DATA);
+}
+function sendData (body) {
+  return load(Route.SEND_DATA, Method.POST, body);
+}
 
 export {getData, sendData};

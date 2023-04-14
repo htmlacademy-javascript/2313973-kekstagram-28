@@ -1,8 +1,7 @@
 import {isEscapeKey} from './util.js';
 import {resetScale} from './scale.js';
 import {resetEffects} from './effects.js';
-import { sendData } from './fetch.js';
-import { onShowErrorMessage, onShowSuccessMessage, isErrorMessageOpen} from './messages.js';
+import { isErrorMessageOpen, changeButtonSubmit} from './messages.js';
 
 const HASHTAG_SYMBOLS = /^#[a-za-яё0-9]{1,19}$/i;
 const HASHTAG_ERROR_TEXT_SYMBOLS = 'Хэштэг должен начинаться с # и содержать только цифры и буквы, максимальная длины - 20 символов';
@@ -17,8 +16,6 @@ const uploadForm = document.querySelector('.img-upload__form');
 const hashtagField = uploadForm.querySelector('.text__hashtags');
 const commentField = uploadForm.querySelector('.text__description');
 const uploadSubmit = document.querySelector('.img-upload__form');
-const uploadSubmitButton = document.querySelector('.img-upload__submit');
-
 
 const pristine = new Pristine (uploadForm, {
   classTo: 'img-upload__field-wrapper',
@@ -53,7 +50,7 @@ function onCloseUploadModal () {
   pristine.reset();
   resetScale();
   resetEffects();
-  uploadSubmitButton.removeAttribute('disabled');
+  changeButtonSubmit(false);
 }
 
 uploadCancel.addEventListener('click', onCloseUploadModal);
@@ -78,7 +75,7 @@ function checkValidCount (value) {
 
 function checkUniqueaHashtags (value) {
   const tags = createArrayOfTags(value);
-  const toLowerCaseTags = tags.map((tag) => tag.toLowerCase());
+  const toLowerCaseTags = createArrayOfTags(value.toLowerCase());
   return tags.length === new Set(toLowerCaseTags).size;
 }
 
@@ -92,17 +89,10 @@ const setUserFormSubmit = (onSuccess) => {
     evt.preventDefault();
     const isValid = pristine.validate();
     if (isValid) {
+      changeButtonSubmit(true);
       const formData = new FormData(evt.target);
-      uploadSubmitButton.setAttribute('disabled', 'disabled');
-      await sendData(formData)
-        .then(uploadSubmitButton.removeAttribute('disabled'))
-        .then(onSuccess).then(() => {
-          onShowSuccessMessage();
-        })
-        .catch(
-          () => {
-            onShowErrorMessage();
-          });
+      await onSuccess(formData);
+      changeButtonSubmit(false);
     }
   });
 };

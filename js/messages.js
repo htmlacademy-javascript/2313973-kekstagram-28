@@ -1,12 +1,18 @@
-import {isEscapeKey } from './util.js';
+import {isEscapeKey} from './util.js';
 
 const succesMessageTamplate = document.querySelector('#success').content.querySelector('.success');
 const errorMessageTamplate = document.querySelector('#error').content.querySelector('.error');
+const uploadSubmitButton = document.querySelector('.img-upload__submit');
+let errorMessageOpen = false;
 
-let ErrorMessageOpen = false;
+const isErrorMessageOpen = () => errorMessageOpen === false;
 
-const isErrorMessageOpen = () => ErrorMessageOpen === false;
-
+function changeButtonSubmit (boolean) {
+  if (boolean) {
+    return uploadSubmitButton.setAttribute('disabled',true);
+  }
+  return uploadSubmitButton.removeAttribute('disabled');
+}
 
 function onShowSuccessMessage () {
   const newSuccessMessage = succesMessageTamplate.cloneNode(true);
@@ -24,7 +30,7 @@ function onShowErrorMessage () {
   errorButton.addEventListener('click',onCloseErrorMessage);
   document.addEventListener('keydown', onDocumentKeydownError);
   document.addEventListener('click',onCloseOutsideError);
-  ErrorMessageOpen = true;
+  errorMessageOpen = true;
 }
 
 function onCloseSuccesMessage () {
@@ -39,7 +45,8 @@ function onCloseErrorMessage () {
   newErrorMessage.remove();
   document.removeEventListener('keydown', onDocumentKeydownError);
   document.removeEventListener('click',onCloseOutsideError);
-  ErrorMessageOpen = false;
+  errorMessageOpen = false;
+  changeButtonSubmit(false);
 }
 
 function onCloseOutsideSuccess (evt) {
@@ -68,4 +75,4 @@ function onDocumentKeydownError (evt) {
 }
 
 
-export {onShowSuccessMessage, onShowErrorMessage,isErrorMessageOpen};
+export {onShowSuccessMessage, onShowErrorMessage,isErrorMessageOpen, changeButtonSubmit};

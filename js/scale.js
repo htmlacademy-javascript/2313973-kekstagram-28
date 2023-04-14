@@ -24,14 +24,16 @@ function onBiggerButtonClick () {
 
 function onSmallerButtonClick () {
   const currentValue = parseInt(photosScale.value, 10);
-  let NewValue = currentValue - SCLALE_STEP;
-  if (NewValue < MIN_SCALE) {
-    NewValue = MIN_SCALE;
+  let newValue = currentValue - SCLALE_STEP;
+  if (newValue < MIN_SCALE) {
+    newValue = MIN_SCALE;
   }
-  toScaleImage(NewValue);
+  toScaleImage(newValue);
 }
 
-const resetScale = () => toScaleImage(DEFAULT_SCALE);
+function resetScale () {
+  toScaleImage(DEFAULT_SCALE);
+}
 
 
 zoomInButton.addEventListener('click', onBiggerButtonClick);

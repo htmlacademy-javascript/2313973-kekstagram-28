@@ -67,16 +67,20 @@ function hideSlider () {
   }
 }
 
-function updateSlider () {
-  sliderElement.noUiSlider.updateOptions({
+function createSettingsObject (effect) {
+  return {
     range: {
-      min: chosenEffect.min,
-      max: chosenEffect.max,
+      min: effect.min,
+      max: effect.max,
     },
-    start: chosenEffect.max,
-    step: chosenEffect.step,
+    start: effect.max,
+    step: effect.step,
     connect: 'lower',
-  });
+  };
+}
+
+function updateSlider () {
+  sliderElement.noUiSlider.updateOptions(createSettingsObject(chosenEffect));
 }
 
 function onEffectsChange (evt) {
@@ -89,15 +93,7 @@ function onEffectsChange (evt) {
   hideSlider();
 }
 
-noUiSlider.create(sliderElement, {
-  range: {
-    min: DEFOULT_EFFECT.min,
-    max: DEFOULT_EFFECT.max,
-  },
-  start: DEFOULT_EFFECT.max,
-  step: DEFOULT_EFFECT.step,
-  connect: 'lower',
-});
+noUiSlider.create(sliderElement, (createSettingsObject(DEFOULT_EFFECT)));
 hideSlider();
 
 function changeIntensityEffect () {
